@@ -24,9 +24,9 @@ class Movie(db.Model):
 class User_Movie(db.Model):
     __tablename__ = 'user_movies'
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
-                        nullable= False)
+                        primary_key=True, nullable= False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'),
-                         nullable= False)
+                         primary_key=True,  nullable= False)
 
     user = db.relationship("User", back_populates='link')
     movie = db.relationship("Movie", back_populates='link')

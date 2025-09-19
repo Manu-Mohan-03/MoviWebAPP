@@ -2,9 +2,6 @@ from models import db, User, Movie, User_Movie
 
 class DataManager:
 
-    def __init__(self):
-        pass
-
     def create_user(self, name):
         new_user = User(name=name)
         db.session.add(new_user)
