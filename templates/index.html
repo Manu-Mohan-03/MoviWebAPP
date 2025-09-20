@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+    <h1>Users</h1>
+    <ul class="user-list">
+        {% for user in users %}
+        <li class="user-entry">
+            <h2>user.name</h2>
+            <a href="{{ url_for('show_movies', user_id=user.user_id ) }}"
+               class="btn">View Movies</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="add_user">
+        <form action="{{ url_for('add_user') }}" method="post">
+            <input type="text" name="username" placeholder="User name" required>
+            <button type="submit" class="btn">Add User</button>
+        </form>
+    </div>
+{% block content %}
