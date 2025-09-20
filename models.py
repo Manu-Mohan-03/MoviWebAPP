@@ -18,7 +18,7 @@ class Movie(db.Model):
     year = db.Column(db.Integer)
     #user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
     # nullable=False)
-    poster_url = db.Column(db.String)
+    poster = db.Column(db.String)
 
     user = db.relationship("User_Movie", back_populates='movie')
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from data_manager import DataManager
 from models import db, Movie
 import os
@@ -46,11 +46,19 @@ def show_movies(user_id):
 def add_movie(user_id):
     """Add a new movie to a user’s list of favorite movies."""
     movie_name = request.form.get('movie_name')
-    try:
-        movie = data_manager.get_movie_using_api(movie_name)
-    except Exception as error:
-        # Error to be handled or allow to user to add without API
-        return None
+    year = request.form.get('movie_name')
+    movie = data_manager.get_movie_by_title(user_id, movie_name, year)
+    if movie:
+        flash("This movie already exists (for the given year)!", "error")
+        return redirect(url_for('show_movies', user_id=user_id))
+    movie = data_manager.get_movie_using_api(movie_name, year)
+    if not movie:
+        # Allow to user to add without API
+        movie = {
+            'title': movie_name,
+            'year': year,
+            'poster': url_for('static', fieldname='image.jpg')
+        }
     new_movie = Movie(**movie)
     data_manager.add_movie(new_movie,user_id)
     return redirect(url_for('show_movies', user_id=user_id))
@@ -77,6 +85,16 @@ def delete_movie(user_id, movie_id):
     """
     data_manager.delete_movie(user_id, movie_id)
     return redirect(url_for('show_movies', user_id=user_id))
+
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html', error=error), 404
+
+@app.errorhandler(Exception)
+def show_error(error):
+    return render_template('error.html', error=error), 500
 
 
 if __name__ == "__main__":
