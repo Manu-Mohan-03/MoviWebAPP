@@ -14,6 +14,10 @@ class DataManager:
         users = User.query.all()
         return users
 
+    def get_user(self,user_id):
+        user = User.query.get(user_id)
+        return user
+
     def get_movies(self, user_id):
         """movie_ids = User_Movie.query.filter_by(user_id = user_id).all()
         movies = []
@@ -21,6 +25,12 @@ class DataManager:
             movie = Movie.query.filter_by(movie_id = movie_id)
             movies.append(movie)
         return movies"""
+        """movies = (
+            User_Movie.query
+            .join(User_Movie.user)
+            .join(User_Movie.movie)
+            .filter(User_Movie.user_id == user_id)
+        )"""
         movies = User_Movie.query.join(User_Movie.movie).filter_by(user_id=user_id)
         return movies
 

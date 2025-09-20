@@ -22,7 +22,7 @@ data_manager = DataManager()
 @app.route('/')
 def home():
     users = data_manager.get_users()
-    return render_template('home.html', users = users)
+    return render_template('index.html', users = users)
 
 
 @app.route('/users', methods=['POST'])
@@ -37,8 +37,9 @@ def show_movies(user_id):
     """
     When clicking on a username,
     retrieves that user’s list of favorite movies and displays it."""
-    movies = data_manager.get_movies()
-    return render_template('movie_list', movies = movies)
+    user = data_manager.get_user(user_id)
+    movies = data_manager.get_movies(user_id)
+    return render_template('movies', user= user, movies = movies)
 
 
 @app.route('/users/<int:user_id>/movies', methods=['POST'])
@@ -52,7 +53,7 @@ def add_movie(user_id):
         return None
     new_movie = Movie(**movie)
     data_manager.add_movie(new_movie,user_id)
-    return redirect(url_for('show_movies'))
+    return redirect(url_for('show_movies', user_id=user_id))
 
 
 
@@ -65,7 +66,7 @@ def update_title(user_id,movie_id):
     """
     new_title = request.form.get('alt_name')
     data_manager.update_alt_title(user_id, movie_id, new_title)
-    return redirect(url_for('show_movies'))
+    return redirect(url_for('show_movies', user_id=user_id))
 
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete',
@@ -74,7 +75,8 @@ def delete_movie(user_id, movie_id):
     """
     Remove a specific movie from a user’s favorite movie list.
     """
-    data_manager.delete_movie(user_id. movie_id)
+    data_manager.delete_movie(user_id, movie_id)
+    return redirect(url_for('show_movies', user_id=user_id))
 
 
 if __name__ == "__main__":
