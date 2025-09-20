@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from data_manager import DataManager
 from models import db, Movie
 import os
+
 app = Flask(__name__)
 
 #To avoid path issues with Flask, set the database URI using an absolute path:
@@ -32,35 +33,48 @@ def add_user():
 
 
 @app.route('/users/<int:user_id>/movies', methods=['GET'])
-def show_movies():
+def show_movies(user_id):
     """
     When clicking on a username,
     retrieves that user’s list of favorite movies and displays it."""
-    pass
+    movies = data_manager.get_movies()
+    return render_template('movie_list', movies = movies)
 
 
 @app.route('/users/<int:user_id>/movies', methods=['POST'])
 def add_movie(user_id):
     """Add a new movie to a user’s list of favorite movies."""
-    pass
+    movie_name = request.form.get('movie_name')
+    try:
+        movie = data_manager.get_movie_using_api(movie_name)
+    except Exception as error:
+        # Error to be handled or allow to user to add without API
+        return None
+    new_movie = Movie(**movie)
+    data_manager.add_movie(new_movie,user_id)
+    return redirect(url_for('show_movies'))
+
 
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/update',
            methods=['POST'])
-def update_title(movie_id):
+def update_title(user_id,movie_id):
     """
     Modify the title of a specific movie in a user’s list,
     without depending on OMDb for corrections.
     """
-    pass
+    new_title = request.form.get('alt_name')
+    data_manager.update_alt_title(user_id, movie_id, new_title)
+    return redirect(url_for('show_movies'))
+
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete',
            methods=['POST'])
-def delete_movie(movie_id):
+def delete_movie(user_id, movie_id):
     """
     Remove a specific movie from a user’s favorite movie list.
     """
-    pass
+    data_manager.delete_movie(user_id. movie_id)
 
 
 if __name__ == "__main__":
