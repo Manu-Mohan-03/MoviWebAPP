@@ -7,7 +7,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
 
-    movie = db.relationship("Movie", back_populates='user')
+    movie = db.relationship("User_Movie", back_populates='user')
 
 
 class Movie(db.Model):
@@ -30,6 +30,6 @@ class User_Movie(db.Model):
                          primary_key=True,  nullable= False)
     movie_title = db.Column(db.String(50), nullable=False)
 
-    user = db.relationship("User", back_populates='link')
-    movie = db.relationship("Movie", back_populates='link')
+    user = db.relationship("User", back_populates='movie')
+    movie = db.relationship("Movie", back_populates='user')
 

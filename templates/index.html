@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% block content %}
     <h1>Users</h1>
     <ul class="user-list">
         {% for user in users %}
         <li class="user-entry">
-            <h2>user.name</h2>
+            <h2>{{ user.name }}</h2>
             <a href="{{ url_for('show_movies', user_id=user.user_id ) }}"
-               class="btn">View Movies</a>
+               class="button">View Movies</a>
         </li>
         {% endfor %}
     </ul>
@@ -15,4 +16,4 @@
             <button type="submit" class="button">Add User</button>
         </form>
     </div>
-{% block content %}
+{% endblock %}

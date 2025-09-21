@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% block content %}
     <a href="{{ url_for('home') }}" class="back-link">&larr; Back to Users</a>
     <h1>Movies for {{ user.name }}</h1>
     <ul class="movie-list">
         {% for movie in movies %}
         <li class="movie-entry">
-            <img src="{{}}" alt="Poster for {{}}">
+            <img src="{{ movie.movie.poster }}" alt="Poster for {{movie.movie.title}}" class="movie-poster">
             <form action="{{
             url_for('update_title', user_id=movie.user_id , movie_id=movie.movie_id )
             }}" method="post">
@@ -44,4 +45,4 @@
             <button type="submit" class="button">Add movie</button>
         </form>
     </div>
-{% block content %}
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-    <div>
-        <h2>{{error.code}}.{{error.name}}</h2>
-        <p>{{error.description}}</p>
-    </div>
 {% block content %}
+    <div>
+        <h2>{{error__cause__}}</h2>
+            <p>{{error}}</p>
+    </div>
+{% endblock %}
