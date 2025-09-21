@@ -39,11 +39,14 @@ class DataManager:
         :param user_id: integer unique user id
         """
         # Check movie exist in movie table
-        movie = self.get_movie_by_title(movie.title, year=movie.year)
-        if not movie:
+        """movie_exist = self.get_movie_by_title(movie.title, year=movie.year)
+        if not movie_exist:
             # Add movie to the table
             db.session.add(movie)
-            self.db_commit()
+            self.db_commit()"""
+        # Add movie to the table
+        db.session.add(movie)
+        self.db_commit()
         # Update the movie to the user list of movies in user_movies table
         self.link_user_to_movie(movie, user_id)
 
@@ -86,7 +89,6 @@ class DataManager:
         movie_res = response.json()
 
         if movie_res["Response"] == 'False':
-            print("API Failed")
             return None
         else:
             # Get the column names into a list of strings

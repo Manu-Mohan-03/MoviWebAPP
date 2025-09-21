@@ -66,7 +66,7 @@ def add_movie(user_id):
     movie = data_manager.get_movie_using_api(movie_name, year)
     if not movie:
         # Check if movie exist in movie table
-        movie = data_manager.get_movie_by_title(movie.title, year=movie.year)
+        movie = data_manager.get_movie_by_title(movie_name, year=year)
         if movie:
             data_manager.link_user_to_movie(movie,user_id)
             return redirect(url_for('show_movies', user_id=user_id))
@@ -116,7 +116,7 @@ def page_not_found(error):
 @app.errorhandler(Exception)
 @app.errorhandler(500)
 def show_error(error):
-    """Error handler for server side issues"""
+    """#Error handler for server side issues"""
     return render_template('error.html', error=error), 500
 
 
