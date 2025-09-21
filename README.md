@@ -29,6 +29,7 @@ We welcome contributions! If you'd like to contribute to this project, please fo
 2. Delete and Update User
 3. Enrich UI
 4. Deploy the project
+5. Fall back image using CSS
 
 
 
