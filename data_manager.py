@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 import requests
 import os
 
+# For API Key
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
+
 class DataManager:
 
     def create_user(self, name):
@@ -73,11 +77,9 @@ class DataManager:
     def get_movie_using_api(self,name, year=None):
         """To use OMDB API to fetch the movie details"""
         request_url = "http://www.omdbapi.com/"
-        # For API Key
-        load_dotenv()
-        api_key = os.getenv('API_KEY')
+
         # Populate the url
-        query_string = f"?apikey={api_key}&t={name}"
+        query_string = f"?apikey={API_KEY}&t={name}"
         if year:
             query_string += f"&y={year}"
         url = request_url + query_string
@@ -132,11 +134,11 @@ class DataManager:
             )
         else:
             # Query from movies table
-            query = (Movie.query.filter(Movie.title == title))
+            query = (Movie.query.filter(Movie.title.ilike(title)))
         if year:
             query = query.filter(Movie.year == year)
-        #movie = query.first()
-        movie = query.one_or_none()
+        movie = query.first()
+        #movie = query.one_or_none()
         return movie
 
     def db_commit(self):

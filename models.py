@@ -22,12 +22,14 @@ class Movie(db.Model):
 
     user = db.relationship("User_Movie", back_populates='movie')
 
+
 class User_Movie(db.Model):
     __tablename__ = 'user_movies'
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                         primary_key=True, nullable= False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'),
                          primary_key=True,  nullable= False)
+    # Editable title name for the movie for each user
     movie_title = db.Column(db.String(50), nullable=False)
 
     user = db.relationship("User", back_populates='movie')
